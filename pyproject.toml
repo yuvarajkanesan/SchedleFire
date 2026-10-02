@@ -1,0 +1,69 @@
+[build-system]
+# Stays on the pre-PEP-639 license syntax (see `license` below) so building from source still
+# works on Python 3.7/3.8: setuptools >=77 dropped support for those interpreters.
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "schedulefire"
+dynamic = ["version"]
+description = "scheduleFire - background job processing for Python, modelled on .NET's Hangfire: fire-and-forget, delayed, recurring and continuation jobs with a dashboard."
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [{ name = "scheduleFire contributors" }]
+keywords = [
+    "background-jobs", "job-queue", "task-queue", "scheduler", "cron",
+    "hangfire", "worker", "dashboard", "asyncio",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+    "Framework :: AsyncIO",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+]
+license = { text = "MIT" }
+# ^ the older `{text=...}` table form, not the newer SPDX string + `license-files`: that needs
+# setuptools >=77, which dropped Python 3.7/3.8 support. Revisit once those are dropped here too.
+# Add once the repo is public, e.g.:
+# [project.urls]
+# Homepage = "https://github.com/<org>/schedulefire"
+# Repository = "https://github.com/<org>/schedulefire"
+# Issues = "https://github.com/<org>/schedulefire/issues"
+# Changelog = "https://github.com/<org>/schedulefire/blob/main/CHANGELOG.md"
+# No dependencies on Python 3.11+. Older versions get small backports of stdlib modules.
+dependencies = [
+    "tomli>=1.1; python_version < '3.11'",
+    "backports.zoneinfo; python_version < '3.9'",
+]
+
+[project.optional-dependencies]
+# Time zone data for recurring jobs with a time_zone on Windows.
+tz = ["tzdata"]
+postgres = ["psycopg[binary]>=3.1"]
+redis = ["redis>=4.2"]
+mysql = ["PyMySQL>=1.0"]
+sqlserver = ["pyodbc>=4.0"]
+
+[project.scripts]
+schedulefire = "schedulefire.__main__:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "schedulefire.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["schedulefire*"]
+
+[tool.setuptools.package-data]
+schedulefire = ["py.typed"]

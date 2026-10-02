@@ -1,0 +1,3 @@
+flask>=2.2
+# scheduleFire, installed from the exported wheel (build it with: pip wheel .. --no-deps -w ../dist)
+../dist/schedulefire-0.1.0-py3-none-any.whl

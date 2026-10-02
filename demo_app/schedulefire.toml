@@ -1,0 +1,50 @@
+# scheduleFire settings for the demo shop.
+# The web app (flask --app shop.web run) and the workers (schedulefire server) both read this file.
+
+[storage]
+use = "local"
+
+[storage.local]
+type = "sqlite"
+path = "data/jobs.db"
+
+[jobs]
+expiration = "1d"
+
+[retry]
+attempts = 3
+delays = ["2s", "5s", "10s"]
+
+[server]
+name = "shop-worker"
+workers = 4
+queues = ["critical", "default", "low"]     # highest priority first
+imports = ["shop.jobs"]
+schedule_polling_interval = "2s"
+
+[dashboard]
+enabled = false                             # mounted inside the Flask app at /schedule-fire
+title = "Shop jobs"
+auth = "basic"
+
+[dashboard.users]
+admin = "${SHOP_ADMIN_PASSWORD:-change-me-please}"
+
+[dashboard.routes]
+recurring = "/schedules"
+
+[security]
+allowed_job_modules = ["shop.jobs"]
+
+[logging]
+level = "INFO"
+
+[[recurring]]
+id = "nightly-sales-report"
+job = "shop.jobs:nightly_sales_report"
+cron = "0 2 * * *"
+
+[[recurring]]
+id = "cleanup-abandoned-carts"
+job = "shop.jobs:cleanup_abandoned_carts"
+cron = "*/10 * * * *"

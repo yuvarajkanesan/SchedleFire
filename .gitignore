@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Test / coverage
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.tox/
+
+# scheduleFire runtime artifacts (SQLite databases, exports, etc.)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# demo_app: its own venv and generated data
+demo_app/.venv/
+demo_app/data/
+demo_app/dist/
+demo_app/shop.jobs.export_all_orders
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
